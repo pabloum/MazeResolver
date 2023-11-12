@@ -12,7 +12,7 @@ public class RequestHandler : IRequestHandler
     {
         var baseUrl = configuration.GetSection("MazeRunnerBaseUrl").Value;
         client = httpClient;
-        client.BaseAddress = new Uri(baseUrl ?? "https://mazerunnerapi6.azurewebsites.net/api");
+        client.BaseAddress = new Uri(baseUrl ?? "https://mazerunnerapi6.azurewebsites.net/api/");
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
