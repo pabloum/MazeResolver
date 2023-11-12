@@ -6,5 +6,5 @@ public enum Operation
     GoNorth,
     GoSouth,
     GoWest,
-    GowEast
+    GoEast
 }

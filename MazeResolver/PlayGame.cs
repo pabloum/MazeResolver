@@ -19,15 +19,60 @@ public class PlayGame
     {
         var maze = await CreateMaze();
         var game = await CreateGame(maze.MazeUid);
+        var gameState = await TakeALook(game);
+        
+        Console.WriteLine($"You are in a maze of {maze.Width} x {maze.Height}");
 
         while (!game.Completed)
         {
-            await MoveToNextCell(game);
-            var gameState = await TakeALook(game);
+            var wasMoveSuccesful = await MoveToNextCell(gameState);
+            gameState = await TakeALook(game);
+            InformUser(gameState, wasMoveSuccesful);
             UpdateGame(game, gameState);
 
             if (ShouldReset())
                 await ResetGame(game);
+            
+            WaitForUser();
+        }
+    }
+
+    private void WaitForUser()
+    {
+        Console.WriteLine("Press any key to continue.");
+        Console.ReadKey();
+    }
+
+    private void InformUser(GameLookDto gameLook, bool wasMoveSuccesful)
+    {
+        var blockSentences =  new Dictionary<bool, string>
+        {   
+            {true, "is blocked"},
+            {false, "is not blocked"},
+        };
+
+        if (wasMoveSuccesful) 
+        {
+            Console.WriteLine("Move was succesful");
+        }
+
+        Console.WriteLine($"Your current position is X:{gameLook.Game.CurrentPositionX} x Y:{gameLook.Game.CurrentPositionY}");
+        Console.WriteLine("");
+        Console.WriteLine($"North {blockSentences[gameLook.MazeBlockView.NorthBlocked]}");
+        Console.WriteLine($"South {blockSentences[gameLook.MazeBlockView.SouthBlocked]}");
+        Console.WriteLine($"West {blockSentences[gameLook.MazeBlockView.WestBlocked]}");
+        Console.WriteLine($"East {blockSentences[gameLook.MazeBlockView.EastBlocked]}");
+    }
+
+    private void DrawCurrentState(GameLookDto gameLook, MazeDto mazeDto)
+    {
+        for (int x = 0; x < mazeDto.Width; x++) 
+        {
+            for (int y = 0; y < mazeDto.Height; y++)
+            {
+                Console.Write($"");
+            }
+            Console.Write("\n");
         }
     }
 
@@ -52,11 +97,13 @@ public class PlayGame
         return game;
     } 
 
-    private async Task<GameLookDto> MoveToNextCell(GameDto currentState)
+    private async Task<bool> MoveToNextCell(GameLookDto currentState)
     {
-        var direction = ChooseNextDirection();
-        var game = await _gameProvider.MoveNextCell(currentState.MazeUid, currentState.GameUid, direction);
-        return game;
+        var direction = ChooseNextDirection(currentState);
+        var game = await _gameProvider.MoveNextCell(currentState.Game.MazeUid, currentState.Game.GameUid, direction);
+
+        return game != null &&
+            (game.Game.CurrentPositionX != currentState.Game.CurrentPositionX ||  game.Game.CurrentPositionY != currentState.Game.CurrentPositionY);
     }
 
     private async Task<GameLookDto> TakeALook(GameDto currentState)
@@ -76,9 +123,18 @@ public class PlayGame
         return false;
     }
 
-    private Operation ChooseNextDirection()
+    private Operation ChooseNextDirection(GameLookDto currentState)
     {
-        // TODO: Create logic for decding this
-        return Operation.GoNorth;
+        var directions = new Dictionary<Operation, bool>()
+        {
+            {Operation.GoSouth, currentState.MazeBlockView.SouthBlocked},
+            {Operation.GoWest, currentState.MazeBlockView.WestBlocked},
+            {Operation.GoNorth, currentState.MazeBlockView.NorthBlocked},
+            {Operation.GoEast, currentState.MazeBlockView.EastBlocked},
+        };
+        
+        var possibleDirections = directions.Where(d => d.Value).Select(d => d.Key);
+
+        return possibleDirections.First();
     }
 }
