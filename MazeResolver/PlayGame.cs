@@ -53,15 +53,17 @@ public class PlayGame
 
         if (wasMoveSuccesful) 
         {
+            Console.WriteLine("");
             Console.WriteLine("Move was succesful");
         }
 
-        Console.WriteLine($"Your current position is X:{gameLook.Game.CurrentPositionX} x Y:{gameLook.Game.CurrentPositionY}");
         Console.WriteLine("");
+        Console.WriteLine($"Your current position is X:{gameLook.Game.CurrentPositionX} x Y:{gameLook.Game.CurrentPositionY}");
         Console.WriteLine($"North {blockSentences[gameLook.MazeBlockView.NorthBlocked]}");
         Console.WriteLine($"South {blockSentences[gameLook.MazeBlockView.SouthBlocked]}");
         Console.WriteLine($"West {blockSentences[gameLook.MazeBlockView.WestBlocked]}");
         Console.WriteLine($"East {blockSentences[gameLook.MazeBlockView.EastBlocked]}");
+        Console.WriteLine("");
     }
 
     private void DrawCurrentState(GameLookDto gameLook, MazeDto mazeDto)
