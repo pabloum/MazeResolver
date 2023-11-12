@@ -1,4 +1,5 @@
 using DTOs;
+using Enums;
 using MazeResolver;
 
 namespace Providers;
@@ -12,10 +13,10 @@ public class GameProvider : IGameProvider
         _requestHandler = requestHandler;
     }
 
-    public async Task<GameDto> CreateNewGame(Guid mazeUuid)
+    public async Task<GameDto> CreateNewGame(Guid mazeUuid, Operation operation)
     {
-        var url = "";
-        var payload = "";
+        var url = $"/Game/{mazeUuid}";
+        var payload = $"\"Operation\": \"{operation}\"";
 
         var game = await _requestHandler.Post<GameDto>(url, payload);
 
@@ -24,26 +25,26 @@ public class GameProvider : IGameProvider
 
     public async Task<GameDto> TakeALook(Guid mazeUuid, Guid gameUuid) 
     {
-        var url = "";
+        var url = $"/Game/{mazeUuid}/{gameUuid}";
         var game = await _requestHandler.Get<GameDto>(url);
 
         return game;
     }
 
-    public async Task<GameDto> MoveNextCell(Guid mazeUuid, Guid gameUuid)
+    public async Task<GameDto> MoveNextCell(Guid mazeUuid, Guid gameUuid, Operation operation)
     {
-        var url = "";
-        var payload = "";
+        var url = $"/Game/{mazeUuid}/{gameUuid}";
+        var payload = $"\"Operation\": \"{operation}\"";
 
         var game = await _requestHandler.Post<GameDto>(url, payload);
 
         return game;
     }
 
-    public async Task<GameDto> ResetGame(Guid mazeUuid, Guid gameUuid)
+    public async Task<GameDto> ResetGame(Guid mazeUuid, Guid gameUuid, Operation operation)
     {
-        var url = "";
-        var payload = "";
+        var url = $"/Game/{mazeUuid}/{gameUuid}";
+        var payload = $"\"Operation\": \"{operation}\"";
 
         var game = await _requestHandler.Post<GameDto>(url, payload);
 

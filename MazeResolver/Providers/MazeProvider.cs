@@ -12,10 +12,10 @@ public class MazeProvider : IMazeProvider
         _requestHandler = requestHandler;
     }
 
-    public async Task<MazeDto> CreateMaze()
+    public async Task<MazeDto> CreateMaze(int width, int height)
     {
-        var url = "";
-        var payload = "";
+        var url = "/Maze";
+        var payload = $"\"Width\": {width}, \"Width\": {height}";
 
         var game = await _requestHandler.Post<MazeDto>(url, payload);
 
@@ -24,11 +24,8 @@ public class MazeProvider : IMazeProvider
 
     public async Task<MazeDetailsDto> SeeMaze(Guid mazeUuid)
     {
-        var url = "";
-        var payload = "";
-
-        var game = await _requestHandler.Post<MazeDetailsDto>(url, payload);
-
+        var url = @"/Maze/{mazeUuid}";
+        var game = await _requestHandler.Get<MazeDetailsDto>(url);
         return game;
     }
 }

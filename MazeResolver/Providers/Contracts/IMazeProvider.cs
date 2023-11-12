@@ -4,6 +4,6 @@ namespace Providers;
 
 public interface IMazeProvider
 {
-    Task<MazeDto> CreateMaze();
+    Task<MazeDto> CreateMaze(int width, int height);
     Task<MazeDetailsDto> SeeMaze(Guid mazeUuid);
 }
