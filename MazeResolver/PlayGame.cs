@@ -133,7 +133,7 @@ public class PlayGame
             {Operation.GoEast, currentState.MazeBlockView.EastBlocked},
         };
         
-        var possibleDirections = directions.Where(d => d.Value).Select(d => d.Key);
+        var possibleDirections = directions.Where(d => !d.Value).Select(d => d.Key);
 
         return possibleDirections.First();
     }

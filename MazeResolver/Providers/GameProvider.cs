@@ -16,7 +16,7 @@ public class GameProvider : IGameProvider
     public async Task<GameDto> CreateNewGame(Guid mazeUuid, Operation operation)
     {
         var url = $"Game/{mazeUuid}";
-        var payload = $"\"Operation\": \"{operation}\"";
+        var payload = $"{{\"Operation\": \"{operation}\"}}";
         var game = await _requestHandler.Post<GameDto>(url, payload);
 
         return game;
@@ -33,7 +33,7 @@ public class GameProvider : IGameProvider
     public async Task<GameLookDto> MoveNextCell(Guid mazeUuid, Guid gameUuid, Operation operation)
     {
         var url = $"Game/{mazeUuid}/{gameUuid}";
-        var payload = $"\"Operation\": \"{operation}\"";
+        var payload = $"{{\"Operation\": \"{operation}\"}}";
         var game = await _requestHandler.Post<GameLookDto>(url, payload);
         return game;
     }
@@ -41,7 +41,7 @@ public class GameProvider : IGameProvider
     public async Task ResetGame(Guid mazeUuid, Guid gameUuid, Operation operation)
     {
         var url = $"Game/{mazeUuid}/{gameUuid}";
-        var payload = $"\"Operation\": \"{operation}\"";
+        var payload = $"{{\"Operation\": \"{operation}\"}}";
         await _requestHandler.Post<GameDto>(url, payload);
     }
 }
