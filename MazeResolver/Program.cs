@@ -22,7 +22,14 @@ class Program
 
     private static ServiceProvider SetUpDependencyInjection()
     {
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
+            
         var serviceProvider = new ServiceCollection()
+            .AddSingleton<IConfiguration>(configuration)
+            .AddHttpClient()
             .AddTransient<IRequestHandler, RequestHandler>() 
             .AddTransient<IMazeProvider, MazeProvider>() 
             .AddTransient<IGameProvider, GameProvider>() 
