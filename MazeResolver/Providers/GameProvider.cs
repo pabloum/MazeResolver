@@ -23,10 +23,10 @@ public class GameProvider : IGameProvider
         return game;
     }
 
-    public async Task<GameDto> TakeALook(Guid mazeUuid, Guid gameUuid) 
+    public async Task<GameLookDto> TakeALook(Guid mazeUuid, Guid gameUuid) 
     {
         var url = $"/Game/{mazeUuid}/{gameUuid}";
-        var game = await _requestHandler.Get<GameDto>(url);
+        var game = await _requestHandler.Get<GameLookDto>(url);
 
         return game;
     }

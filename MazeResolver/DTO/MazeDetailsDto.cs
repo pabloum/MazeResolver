@@ -2,5 +2,8 @@ namespace DTOs;
 
 public class MazeDetailsDto
 {
-    public int Id { get; set;}
+    public Guid MazeUid { get; set;}
+    public int Height { get; set;}
+    public int Width { get; set;}
+    public IEnumerable<MazeBlockViewDto> Blocks { get; set; }
 }

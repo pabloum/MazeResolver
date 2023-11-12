@@ -2,5 +2,7 @@ namespace DTOs;
 
 public class MazeDto
 {
-    public int Id { get; set;}
+    public Guid MazeUid { get; set;}
+    public int Height { get; set;}
+    public int Width { get; set;}
 }
