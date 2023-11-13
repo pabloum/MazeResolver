@@ -9,8 +9,12 @@ public class DirectionAlgorithm : IDirectionAlgorithm
 
     public Operation ChooseDirection(IEnumerable<Operation> possibleDirections, GameDto game, HashSet<(int x, int y)> alreadySteppedMazeCoordinates)
     {
-        // NOTE:  This algorithm does NOT reach the end of the maze yet.
-        
+        if (game.CurrentPositionX == 0 && game.CurrentPositionY == 0)
+        {
+            _path.Clear();
+            _path.Push((0, 0));
+        }
+
         foreach (var direction in possibleDirections)
         {
             var estimatedCoordX = game.CurrentPositionX + MoveCalculations._steps[direction].xIncrease;
@@ -23,7 +27,7 @@ public class DirectionAlgorithm : IDirectionAlgorithm
             }
         }
 
-        if (_path.Count == 0)
+        if (_path.Count < 1)
         {
             return possibleDirections.First();
         }

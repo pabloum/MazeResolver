@@ -40,6 +40,8 @@ public class PlayGame
             
             // WaitForUser();
         }
+
+        Console.WriteLine($"You maze was COMPLETED. CONGRATULATIONS !!!!");
     }
 
     private void WaitForUser()
