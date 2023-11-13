@@ -159,6 +159,7 @@ public class PlayGame
     /// <returns></returns>
     private Operation BestMove(IEnumerable<Operation> possibleDirections, GameDto game)
     {
+        // TODO: create a proper logic to choose next direction
         foreach (var direction in possibleDirections)
         {
             var estimatedCoordX = game.CurrentPositionX + _steps[direction].xIncrease;
