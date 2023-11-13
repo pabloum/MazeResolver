@@ -10,8 +10,8 @@ public class PlayGame
     private readonly IGameProvider _gameProvider;
     private readonly Dictionary<Operation, (int xIncrease, int yIncrease)> _steps = new Dictionary<Operation, (int XIncrease, int yIncrease)>
     {
-        { Operation.GoNorth, (0,1)},
-        { Operation.GoSouth, (0,-1)},
+        { Operation.GoNorth, (0,-1)},
+        { Operation.GoSouth, (0,1)},
         { Operation.GoWest,  (-1,0)},
         { Operation.GoEast,  (1,0)},
     };
@@ -132,6 +132,7 @@ public class PlayGame
 
     private bool ShouldReset()
     {
+        // Todo: implement logic here
         return false;
     }
 
