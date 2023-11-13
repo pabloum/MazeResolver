@@ -1,4 +1,4 @@
-﻿using System;
+﻿using MazeResolver.DirectionsFinder;
 using Providers;
 
 namespace MazeResolver;
@@ -13,8 +13,9 @@ class Program
 
         var mazeProvider = serviceProvider.GetRequiredService<IMazeProvider>();
         var gameProvider = serviceProvider.GetRequiredService<IGameProvider>();
+        var algorithmFactory = serviceProvider.GetRequiredService<IAlgorithmFactory>();
 
-        var playGame = new PlayGame(mazeProvider, gameProvider);
+        var playGame = new PlayGame(mazeProvider, gameProvider, algorithmFactory);
         await playGame.Play();
 
         Console.WriteLine("Press any key to exit.");
@@ -33,6 +34,7 @@ class Program
             .AddTransient<IRequestHandler, RequestHandler>() 
             .AddTransient<IMazeProvider, MazeProvider>() 
             .AddTransient<IGameProvider, GameProvider>() 
+            .AddScoped<IAlgorithmFactory, AlgorithmFactory>() 
             .BuildServiceProvider();
 
         return serviceProvider;
