@@ -8,6 +8,15 @@ public class PlayGame
 {
     private readonly IMazeProvider _mazeProvider;
     private readonly IGameProvider _gameProvider;
+    private readonly Dictionary<Operation, (int xIncrease, int yIncrease)> _steps = new Dictionary<Operation, (int XIncrease, int yIncrease)>
+    {
+        { Operation.GoNorth, (0,1)},
+        { Operation.GoSouth, (0,-1)},
+        { Operation.GoWest,  (-1,0)},
+        { Operation.GoEast,  (1,0)},
+    };
+
+    private HashSet<(int x, int y)> _alreadySteppedMazeCoordinates = new HashSet<(int x, int y)>();
     
     public PlayGame(IMazeProvider mazeProvider, IGameProvider gameProvider)
     {
@@ -111,17 +120,18 @@ public class PlayGame
     private async Task<GameLookDto> TakeALook(GameDto currentState)
     {
         var gameDetails = await _gameProvider.TakeALook(currentState.MazeUid, currentState.GameUid);
+        _alreadySteppedMazeCoordinates.Add((gameDetails.Game.CurrentPositionX, gameDetails.Game.CurrentPositionY));
         return gameDetails;
     }
 
     private async Task ResetGame(GameDto currentState)
     {
         await _gameProvider.ResetGame(currentState.MazeUid, currentState.GameUid, Operation.Start);
+        _alreadySteppedMazeCoordinates.Clear();
     }
 
     private bool ShouldReset()
     {
-        // TODO: Create logic for deciding this
         return false;
     }
 
@@ -136,6 +146,28 @@ public class PlayGame
         };
         
         var possibleDirections = directions.Where(d => !d.Value).Select(d => d.Key);
+
+        return BestMove(possibleDirections, currentState.Game);
+    }
+
+    /// <summary>
+    /// Among all possible directions, check one by one if we have already been there
+    /// </summary>
+    /// <param name="possibleDirections"></param>
+    /// <param name="game"></param>
+    /// <returns></returns>
+    private Operation BestMove(IEnumerable<Operation> possibleDirections, GameDto game)
+    {
+        foreach (var direction in possibleDirections)
+        {
+            var estimatedCoordX = game.CurrentPositionX + _steps[direction].xIncrease;
+            var estimatedCoordy = game.CurrentPositionY + _steps[direction].yIncrease;
+
+            if (!_alreadySteppedMazeCoordinates.Contains((estimatedCoordX, estimatedCoordy)))
+            {
+                return direction;
+            }
+        }
 
         return possibleDirections.First();
     }
