@@ -38,7 +38,7 @@ public class PlayGame
             if (ShouldReset())
                 await ResetGame(game);
             
-            WaitForUser();
+            // WaitForUser();
         }
     }
 
