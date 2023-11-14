@@ -26,7 +26,7 @@ public class RequestHandler : IRequestHandler
             return await response.Content.ReadAsAsync<T>();
         }
 
-        return default(T);
+        return default(T) ?? throw new Exception("Http Request failed");
     }
 
     public async Task<T> Post<T>(string url, string payload)
@@ -38,17 +38,11 @@ public class RequestHandler : IRequestHandler
             return await response.Content.ReadAsAsync<T>();
         }
 
-        return default(T);
+        return default(T) ?? throw new Exception("Http Request failed");
     }
 
     private StringContent? CreateContent(string payload)
     {
         return new StringContent(payload, Encoding.UTF8, "application/json");
     }
-}
-
-public class TokenStructure
-{
-    public string access_token { get; set; } = "";
-    public string expires_at { get; set; } = "";
 }

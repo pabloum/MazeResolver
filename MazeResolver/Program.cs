@@ -1,4 +1,4 @@
-﻿using MazeResolver.DirectionsFinder;
+using MazeResolver.DirectionsFinder;
 using Providers;
 
 namespace MazeResolver;
@@ -35,6 +35,11 @@ class Program
             .AddTransient<IMazeProvider, MazeProvider>() 
             .AddTransient<IGameProvider, GameProvider>() 
             .AddScoped<IAlgorithmFactory, AlgorithmFactory>() 
+            .AddScoped<IDirectionAlgorithm, DeadEndAlgorithm>() 
+            .AddScoped<IDirectionAlgorithm, WallFollowerAlgorithm>() 
+            .AddScoped<IDirectionAlgorithm, TremauxAlgorithm>() 
+            .AddScoped<IDirectionAlgorithm, DirectionAlgorithm>() 
+            .AddScoped<IDirectionAlgorithm, RecursiveAlgorithm>() 
             .BuildServiceProvider();
 
         return serviceProvider;

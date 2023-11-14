@@ -4,6 +4,13 @@ namespace MazeResolver.DirectionsFinder;
 
 public class AlgorithmFactory : IAlgorithmFactory
 {
+    private IEnumerable<IDirectionAlgorithm> _algos;
+
+    public AlgorithmFactory(IEnumerable<IDirectionAlgorithm> algos)
+    {
+        _algos = algos;
+    }
+
     private readonly Dictionary<TypeOfAlgorithm, Type> _algorithmImplementation = new Dictionary<TypeOfAlgorithm, Type>
     {
         { TypeOfAlgorithm.TremauxAlgorithm, typeof(TremauxAlgorithm) },
@@ -15,6 +22,6 @@ public class AlgorithmFactory : IAlgorithmFactory
 
     public IDirectionAlgorithm GetAlgorithm(TypeOfAlgorithm typeOfAlgorithm)
     {
-        return (IDirectionAlgorithm)Activator.CreateInstance(_algorithmImplementation[typeOfAlgorithm]);
+        return _algos.FirstOrDefault(a => a.GetType() == _algorithmImplementation[typeOfAlgorithm]) ?? throw new Exception("No implementation available");
     }
 }
