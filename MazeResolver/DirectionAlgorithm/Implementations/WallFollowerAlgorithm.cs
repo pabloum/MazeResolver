@@ -7,7 +7,7 @@ public class WallFollowerAlgorithm : IDirectionAlgorithm
 {
     private Operation _facingTowards;
 
-    private Dictionary<Operation, Operation> _whereToTurn = new Dictionary<Operation, Operation>()
+    private readonly Dictionary<Operation, Operation> _whereToTurn = new Dictionary<Operation, Operation>()
     {
         {Operation.GoEast, Operation.GoSouth},
         {Operation.GoSouth, Operation.GoWest},
@@ -15,9 +15,17 @@ public class WallFollowerAlgorithm : IDirectionAlgorithm
         {Operation.GoNorth, Operation.GoEast},
     };
 
+    private readonly Dictionary<Operation, Operation> _faceBackwards = new Dictionary<Operation, Operation>()
+    {
+        {Operation.GoNorth, Operation.GoSouth},
+        {Operation.GoSouth, Operation.GoNorth},
+        {Operation.GoEast, Operation.GoWest},
+        {Operation.GoWest, Operation.GoEast},
+    };
+
     public Operation ChooseDirection(IEnumerable<Operation> possibleDirections, GameDto game, HashSet<(int x, int y)> alreadySteppedMazeCoordinates)
     {
-        if (game.CurrentPositionX == 0 && game.CurrentPositionY == 0)
+        if (game.CurrentPositionX == 0 && game.CurrentPositionY == 0 && alreadySteppedMazeCoordinates.Count <= 1)
         {
             _facingTowards = Operation.GoEast;
         }
@@ -27,7 +35,7 @@ public class WallFollowerAlgorithm : IDirectionAlgorithm
             return FindLeftTurn(possibleDirections);
         }
 
-        return Operation.Start;
+        return possibleDirections.First();
     }
 
     private Operation FindLeftTurn(IEnumerable<Operation> possibleDirections)
@@ -46,25 +54,8 @@ public class WallFollowerAlgorithm : IDirectionAlgorithm
             }
             else
             {
-                _facingTowards = ContratyDirection(_whereToTurn[_facingTowards]);
+                _facingTowards = _faceBackwards[_whereToTurn[_facingTowards]];
             }
-        }
-    }
-
-    private Operation ContratyDirection(Operation operation)
-    {
-        switch (operation)
-        {
-            case Operation.GoEast:
-                return Operation.GoWest;
-            case Operation.GoSouth:
-                return Operation.GoNorth;
-            case Operation.GoWest:
-                return Operation.GoEast;
-            case Operation.GoNorth:
-                return Operation.GoSouth;
-            default:
-                return Operation.Start;
         }
     }
 }
