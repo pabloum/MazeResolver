@@ -4,7 +4,7 @@
 
 This code resvolves a Maze of 25x25 which consumes the API mentioned in the section [API Specs](#API-specs).
 
-For solving the Maze, I currently hace implemented 2 algorithms: 
+For solving the Maze, I currently have implemented 2 algorithms: 
 
 1. Wall Follower Algorithm
 2. One created by me called Direction Algorithm in de code
@@ -15,7 +15,7 @@ I have 3 remaining implementations left:
 2. Recursive Algorithm 
 3. Treamaux Algorithm.
 
-Four out of those 4 algorithms were algorithms I found after googling Maze Theory. The algorithm named Direction Algorithm was created by me. 
+Four out of those 4 algorithms were algorithms I found after googling Maze Theory. The algorithm named Direction Algorithm was created by me. This is proof that I am capable of creating algorithms on my own, but also I am dedicated enough to read documentation and be wise enough to not re-invent the wheel.
 
 The person that executes the code can choose which algorithm to use simply by going to the class `PlayGame` and editing line `20` with the name of the algorithm that you want to use.
 
