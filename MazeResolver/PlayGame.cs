@@ -17,7 +17,7 @@ public class PlayGame
     {
         _mazeProvider = mazeProvider;
         _gameProvider = gameProvider;
-        _algorithm = algorithmFactory.GetAlgorithm(TypeOfAlgorithm.DirectionAlgorithm);
+        _algorithm = algorithmFactory.GetAlgorithm(TypeOfAlgorithm.WallFollowerAlgorithm);
     }
 
     public async Task Play()
